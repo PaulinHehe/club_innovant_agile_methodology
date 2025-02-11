@@ -1,4 +1,7 @@
-/Main.class
-/models/
-/objets_bdd/
+/Article.class
+/ArticleDAO.class
+/ArticleFenetre.class
 /club_interface/
+/objets_bdd/
+/models/
+/Main.class

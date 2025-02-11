@@ -1,17 +1,18 @@
 package objets_bdd;
 
 import java.util.Date;
+import java.sql.Timestamp;
 
 public class Joueur {
-	int id;
-	String nom;
-	String prenom;
-	Date dateNaissance;
-	String nationalite;
-	int numeroLicence;
-	int numeroMaillot;
-	String position;
-	float taille;
-	float poids;
-	String piedFort;
+	public int id;
+	public String nom;
+	public String prenom;
+	public Timestamp dateNaissance;
+	public String nationalite;
+	public int numeroLicence;
+	public int numeroMaillot;
+	public String position;
+	public float taille;
+	public float poids;
+	public String piedFort;
 }

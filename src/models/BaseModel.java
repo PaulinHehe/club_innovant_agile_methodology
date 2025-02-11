@@ -1,7 +1,9 @@
 package models;
 
+import java.util.HashMap;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class BaseModel {
@@ -9,20 +11,23 @@ public abstract class BaseModel {
     protected String idField = "id";
     
     protected Connection connection;
+	protected HashMap<String, Object> data;
 
     public BaseModel() {
         try {
             this.connection = Database.getConnection();
+            this.data = new HashMap<String, Object>();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+    
 
     public boolean create(String[] columns, Object[] values) {
         if (columns.length != values.length) return false;
 
         String sql = "INSERT INTO " + table + " (" + String.join(", ", columns) + ") VALUES (";
-        sql += String.join(", ", new String[values.length]).replaceAll(".", "?") + ")";
+        sql += String.join(", ", Collections.nCopies(columns.length, "?")) + ")";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             for (int i = 0; i < values.length; i++) {
@@ -36,6 +41,8 @@ public abstract class BaseModel {
         }
     }
 
+
+
     public ResultSet find(int id) {
         String sql = "SELECT * FROM " + table + " WHERE " + idField + " = ?";
         try {
@@ -48,19 +55,15 @@ public abstract class BaseModel {
         }
     }
 
-    public List<ResultSet> all() {
-        List<ResultSet> results = new ArrayList<>();
+    public ResultSet all() {
         String sql = "SELECT * FROM " + table;
         try {
             Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                results.add(rs);
-            }
+        	return stmt.executeQuery(sql);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return results;
+        return null;
     }
 
     public boolean update(int id, String[] columns, Object[] values) {
