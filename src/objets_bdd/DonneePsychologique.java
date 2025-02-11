@@ -1,9 +1,9 @@
 package objets_bdd;
 
 public class DonneePsychologique {
-	int id;
-	String profilPsychologique;
-	String suiviMental;
-	String strategiePreparation;
-	int idConsultation;
+	public int id;
+	public String profilPsychologique;
+	public String suiviMental;
+	public String strategiePreparation;
+	public int idConsultation;
 }

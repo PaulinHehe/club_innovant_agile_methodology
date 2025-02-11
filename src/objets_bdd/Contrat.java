@@ -1,15 +1,15 @@
 package objets_bdd;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class Contrat {
-	int id;
-	int type;
-	Date dateDebut;
-	Date dateFin;
-	float salaire;
-	float prime;
-	String devise;
-	int idJoueur;
+	public int id;
+	public int type;
+	public Timestamp dateDebut;
+	public Timestamp dateFin;
+	public float salaire;
+	public float prime;
+	public String devise;
+	public int idJoueur;
 	
 }

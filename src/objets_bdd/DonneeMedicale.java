@@ -1,8 +1,8 @@
 package objets_bdd;
 
 public class DonneeMedicale {
-	int id;
-	String allergies;
-	String vaccins;
-	int idConsultation;
+	public int id;
+	public String allergies;
+	public String vaccins;
+	public int idConsultation;
 }
