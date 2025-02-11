@@ -1,177 +1,321 @@
+
 import java.sql.*;
+
 import java.util.ArrayList;
+
 import java.util.List;
 
 /**
- * Classe d'accès aux données contenues dans la table article
+ * 
+ * Classe d'accÃ¨s aux donnÃ©es contenues dans la table article
+ * 
  * @version 1.1
- * */
+ * 
+ */
+
 public class ArticleDAO {
 
 	/**
-	 * Paramètres de connexion à la base de données oracle
+	 * 
+	 * ParamÃ¨tres de connexion Ã  la base de donnÃ©es MySQL
+	 * 
 	 * URL, LOGIN et PASS sont des constantes
+	 * 
 	 */
-	final static String URL = "jdbc:oracle:thin:@localhost:1521:xe";
-	final static String LOGIN="bdd1";
-	final static String PASS="bdd1";
 
+	final static String URL = "jdbc:mysql://localhost:3306/stocks"; // Replace with your database name
+
+	final static String LOGIN = "root"; // Replace with your MySQL username
+
+	final static String PASS = ""; // Replace with your MySQL password
 
 	/**
+	 * 
 	 * Constructeur de la classe
 	 * 
 	 */
-	public ArticleDAO()
-	{
-		// chargement du pilote de bases de données
+
+	public ArticleDAO() {
+
+// Chargement du pilote de bases de donnÃ©es
+
 		try {
-			Class.forName("oracle.jdbc.OracleDriver");
+
+			Class.forName("com.mysql.cj.jdbc.Driver"); // MySQL JDBC driver
+
 		} catch (ClassNotFoundException e2) {
-			System.err.println("Impossible de charger le pilote de BDD, ne pas oublier d'importer le fichier .jar dans le projet");
+
+			System.err.println(
+					"Impossible de charger le pilote de BDD, ne pas oublier d'importer le fichier .jar dans le projet");
+
 		}
 
 	}
-	
 
 	/**
+	 * 
 	 * Permet d'ajouter un article dans la table article
-	 * la référence de l'article est produite automatiquement par la base de données en utilisant une séquence
-	 * Le mode est auto-commit par défaut : chaque insertion est validée
-	 * @param nouvArticle l'article à ajouter
-	 * @return le nombre de ligne ajoutées dans la table
+	 * 
+	 * La rÃ©fÃ©rence de l'article est produite automatiquement par la base de donnÃ©es
+	 * en utilisant une sÃ©quence
+	 * 
+	 * Le mode est auto-commit par dÃ©faut : chaque insertion est validÃ©e
+	 * 
+	 * @param nouvArticle l'article Ã  ajouter
+	 * 
+	 * @return le nombre de lignes ajoutÃ©es dans la table
+	 * 
 	 */
-	public int ajouter(Article nouvArticle)
-	{
-		Connection con = null;
-		PreparedStatement ps = null;
-		int retour=0;
 
-		//connexion à la base de données
+	public int ajouter(Article nouvArticle) {
+
+		Connection con = null;
+
+		PreparedStatement ps = null;
+
+		int retour = 0;
+
+// Connexion Ã  la base de donnÃ©es
+
 		try {
 
-			//tentative de connexion
+// Tentative de connexion
+
 			con = DriverManager.getConnection(URL, LOGIN, PASS);
-			//préparation de l'instruction SQL, chaque ? représente une valeur à communiquer dans l'insertion
-			//les getters permettent de récupérer les valeurs des attributs souhaités de nouvArticle
-			ps = con.prepareStatement("INSERT INTO article (art_reference, art_designation, art_pu_ht, art_qte_stock) VALUES (article_seq.NEXTVAL, ?, ?, ?)");
-			ps.setString(1,nouvArticle.getDesignation());
-			ps.setDouble(2,nouvArticle.getPuHt());
-			ps.setInt(3,nouvArticle.getQteStock());
 
-			//Exécution de la requête
-			retour=ps.executeUpdate();
+// PrÃ©paration de l'instruction SQL, chaque ? reprÃ©sente une valeur Ã  communiquer dans l'insertion
 
+// Les getters permettent de rÃ©cupÃ©rer les valeurs des attributs souhaitÃ©s de nouvArticle
+
+			ps = con.prepareStatement(
+					"INSERT INTO article (designation, pu_ht, qtestock) VALUES (?, ?, ?)");
+
+			ps.setString(1, nouvArticle.getDesignation());
+
+			ps.setDouble(2, nouvArticle.getPuHt());
+
+			ps.setInt(3, nouvArticle.getQteStock());
+
+// ExÃ©cution de la requÃªte
+
+			retour = ps.executeUpdate();
 
 		} catch (Exception ee) {
+
 			ee.printStackTrace();
+
 		} finally {
-			//fermeture du preparedStatement et de la connexion
-			try {if (ps != null)ps.close();} catch (Exception t) {}
-			try {if (con != null)con.close();} catch (Exception t) {}
+
+// Fermeture du preparedStatement et de la connexion
+
+			try {
+
+				if (ps != null)
+					ps.close();
+
+			} catch (Exception t) {
+			}
+
+			try {
+
+				if (con != null)
+					con.close();
+
+			} catch (Exception t) {
+			}
+
 		}
+
 		return retour;
 
 	}
 
 	/**
-	 * Permet de récupérer un article à partir de sa référence
-	 * @param reference la référence de l'article à récupérer
+	 * 
+	 * Permet de rÃ©cupÃ©rer un article Ã  partir de sa rÃ©fÃ©rence
+	 * 
+	 * @param reference la rÃ©fÃ©rence de l'article Ã  rÃ©cupÃ©rer
+	 * 
 	 * @return l'article
-	 * @return null si aucun article ne correspond à cette référence
+	 * 
+	 * @return null si aucun article ne correspond Ã  cette rÃ©fÃ©rence
+	 * 
 	 */
-	public Article getArticle(int reference)
-	{
+
+	public Article getArticle(int reference) {
 
 		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs=null;
-		Article retour=null;
 
-		//connexion à la base de données
+		PreparedStatement ps = null;
+
+		ResultSet rs = null;
+
+		Article retour = null;
+
+// Connexion Ã  la base de donnÃ©es
+
 		try {
 
 			con = DriverManager.getConnection(URL, LOGIN, PASS);
-			ps = con.prepareStatement("SELECT * FROM article WHERE art_reference = ?");
-			ps.setInt(1,reference);
 
-			//on exécute la requête
-			//rs contient un pointeur situé jusute avant la première ligne retournée
-			rs=ps.executeQuery();
-			//passe à la première (et unique) ligne retournée 
-			if(rs.next())
-				retour=new Article(rs.getInt("art_reference"),rs.getString("art_designation"),rs.getDouble("art_pu_ht"),rs.getInt("art_qte_stock"));
+			ps = con.prepareStatement("SELECT * FROM article WHERE reference = ?");
 
+			ps.setInt(1, reference);
+
+// On exÃ©cute la requÃªte
+
+			rs = ps.executeQuery();
+
+// Passe Ã  la premiÃ¨re (et unique) ligne retournÃ©e
+
+			if (rs.next())
+
+				retour = new Article(rs.getInt("reference"), rs.getString("designation"),
+						rs.getDouble("pu_ht"), rs.getInt("qtestock"));
 
 		} catch (Exception ee) {
+
 			ee.printStackTrace();
+
 		} finally {
-			//fermeture du ResultSet, du PreparedStatement et de la Connection
-			try {if (rs != null)rs.close();} catch (Exception t) {}
-			try {if (ps != null)ps.close();} catch (Exception t) {}
-			try {if (con != null)con.close();} catch (Exception t) {}
+
+// Fermeture du ResultSet, du PreparedStatement et de la Connection
+
+			try {
+
+				if (rs != null)
+					rs.close();
+
+			} catch (Exception t) {
+			}
+
+			try {
+
+				if (ps != null)
+					ps.close();
+
+			} catch (Exception t) {
+			}
+
+			try {
+
+				if (con != null)
+					con.close();
+
+			} catch (Exception t) {
+			}
+
 		}
+
 		return retour;
 
 	}
 
 	/**
-	 * Permet de récupérer tous les articles stockés dans la table article
+	 * 
+	 * Permet de rÃ©cupÃ©rer tous les articles stockÃ©s dans la table article
+	 * 
 	 * @return une ArrayList d'Articles
+	 * 
 	 */
-	public List<Article> getListeArticles()
-	{
+
+	public List<Article> getListeArticles() {
 
 		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs=null;
-		List<Article> retour=new ArrayList<Article>();
 
-		//connexion à la base de données
+		PreparedStatement ps = null;
+
+		ResultSet rs = null;
+
+		List<Article> retour = new ArrayList<Article>();
+
+// Connexion Ã  la base de donnÃ©es
+
 		try {
 
 			con = DriverManager.getConnection(URL, LOGIN, PASS);
+
 			ps = con.prepareStatement("SELECT * FROM article");
 
-			//on exécute la requête
-			rs=ps.executeQuery();
-			//on parcourt les lignes du résultat
-			while(rs.next())
-				retour.add(new Article(rs.getInt("art_reference"),rs.getString("art_designation"),rs.getDouble("art_pu_ht"),rs.getInt("art_qte_stock")));
+// On exÃ©cute la requÃªte
 
+			rs = ps.executeQuery();
+
+// On parcourt les lignes du rÃ©sultat
+
+			while (rs.next())
+
+				retour.add(new Article(rs.getInt("reference"), rs.getString("designation"),
+						rs.getDouble("pu_ht"), rs.getInt("qtestock")));
 
 		} catch (Exception ee) {
+
 			ee.printStackTrace();
+
 		} finally {
-			//fermeture du rs, du preparedStatement et de la connexion
-			try {if (rs != null)rs.close();} catch (Exception t) {}
-			try {if (ps != null)ps.close();} catch (Exception t) {}
-			try {if (con != null)con.close();} catch (Exception t) {}
+
+// Fermeture du rs, du preparedStatement et de la connexion
+
+			try {
+
+				if (rs != null)
+					rs.close();
+
+			} catch (Exception t) {
+			}
+
+			try {
+
+				if (ps != null)
+					ps.close();
+
+			} catch (Exception t) {
+			}
+
+			try {
+
+				if (con != null)
+					con.close();
+
+			} catch (Exception t) {
+			}
+
 		}
+
 		return retour;
 
 	}
 
-	//main permettant de tester la classe
-	public static void main(String[] args)  throws SQLException {
+// Main permettant de tester la classe
 
-		 ArticleDAO articleDAO=new ArticleDAO();
-		//test de la méthode ajouter
-		Article a = new Article("Set de 2 raquettes de ping-pong",149.9,10);
-		int retour=articleDAO.ajouter(a);
+	public static void main(String[] args) throws SQLException {
 
-		System.out.println(retour+ " lignes ajoutées");
+		ArticleDAO articleDAO = new ArticleDAO();
 
-		//test de la méthode getArticle
+// Test de la mÃ©thode ajouter
+
+		Article a = new Article("Set de 2 raquettes de ping-pong", 149.9, 10);
+
+		int retour = articleDAO.ajouter(a);
+
+		System.out.println(retour + " lignes ajoutÃ©es");
+
+// Test de la mÃ©thode getArticle
+
 		Article a2 = articleDAO.getArticle(1);
+
 		System.out.println(a2);
 
-		 //test de la méthode getListeArticles
-		List<Article> liste=articleDAO.getListeArticles();
-		//System.out.println(liste);
-		for(Article art : liste)
-		{
+// Test de la mÃ©thode getListeArticles
+
+		List<Article> liste = articleDAO.getListeArticles();
+
+		for (Article art : liste) {
+
 			System.out.println(art.toString());
+
 		}
 
 	}
+
 }
