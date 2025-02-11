@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost
--- Généré le : lun. 10 fév. 2025 à 21:42
--- Version du serveur : 10.4.28-MariaDB
--- Version de PHP : 8.2.4
+-- Hôte : 127.0.0.1
+-- Généré le : mar. 11 fév. 2025 à 11:19
+-- Version du serveur : 10.4.32-MariaDB
+-- Version de PHP : 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `db_foot`
 --
-USE db_foot;
-
 
 -- --------------------------------------------------------
 
@@ -65,7 +63,7 @@ CREATE TABLE `donnees_medicales` (
   `id` int(20) NOT NULL,
   `allergies` varchar(255) NOT NULL,
   `vaccins` text NOT NULL,
-  `idJoueurs` int(20) NOT NULL
+  `idConsultation` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
