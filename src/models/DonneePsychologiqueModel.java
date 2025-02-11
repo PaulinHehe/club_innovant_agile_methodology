@@ -1,10 +1,12 @@
 package models;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import objets_bdd.DonneePsychologique;
 import objets_bdd.DonneePsychologique;
 
 public class DonneePsychologiqueModel extends Model {
@@ -40,5 +42,27 @@ public class DonneePsychologiqueModel extends Model {
     		retour.add(this.getDonneePsychologique(data));
     	
     	return retour;
+    }
+    
+    public List<DonneePsychologique> getAllFromJoueur(int idJoueur) throws SQLException {
+        List<DonneePsychologique> donneesPsychologiques = new ArrayList<>();
+
+        // Requête SQL pour récupérer les données psychologiques du joueur
+        String sql = "SELECT * FROM " + table + " WHERE idJoueur = ?";
+        
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, idJoueur); // Associe l'ID du joueur au paramètre de la requête
+            ResultSet data = stmt.executeQuery();
+
+            // Parcourir les résultats et les mapper à des objets DonneePsychologique
+            while (data.next()) {
+                donneesPsychologiques.add(getDonneePsychologique(data));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; // Propager l'exception pour la gestion des erreurs
+        }
+
+        return donneesPsychologiques;
     }
 }

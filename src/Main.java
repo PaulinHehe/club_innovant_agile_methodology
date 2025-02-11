@@ -1,26 +1,41 @@
+import views.ConsultationView;
 
-import java.sql.ResultSet;
-
-import java.sql.SQLException;
-import java.util.List;
+import javax.swing.*;
 
 import models.JoueurModel;
 import objets_bdd.Joueur;
 
+import java.sql.SQLException;
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
-        JoueurModel joueur = new JoueurModel();
-        String[] columns = {"nom", "prenom", "dateNaissance", "nationalite", "numeroLicence", "numeroMaillot", "position", "taille", "poids", "piedFort"};
-        Object[] values = {"Mbappé", "Kylian", "1998-12-20", "France", 123456, 7, "Attaquant", 1.78, 73, "Droitier"};
+        // Utiliser SwingUtilities.invokeLater pour garantir que l'interface graphique
+        // est créée et mise à jour sur le thread de l'interface utilisateur (Event Dispatch Thread)
+        SwingUtilities.invokeLater(() -> {
+            try {
+                // Créer une nouvelle fenêtre (JFrame)
+                JFrame frame = new JFrame("Gestion des Consultations");
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Fermer l'application lorsque la fenêtre est fermée
+                frame.setSize(800, 600); // Définir la taille de la fenêtre
 
-        try {
-        	List<Joueur> data = joueur.getAll();
-			//Joueur data = (Joueur) joueur.get(10);
-			System.out.println(data.get(9).nom);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-		}
+                // Créer une instance de ConsultationView
+                ConsultationView consultationView = new ConsultationView();
+
+                // Ajouter ConsultationView à la fenêtre
+                frame.add(consultationView);
+
+                // Centrer la fenêtre sur l'écran
+                frame.setLocationRelativeTo(null);
+
+                // Rendre la fenêtre visible
+                frame.setVisible(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Erreur lors du chargement des données : " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+    	
+    	
     }
 }

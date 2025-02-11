@@ -1,5 +1,6 @@
 package models;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -43,5 +44,27 @@ public class DonneePhysiqueModel extends Model {
     		retour.add(this.getDonneePhysique(data));
     	
     	return retour;
+    }
+    
+    public List<DonneePhysique> getAllFromJoueur(int idJoueur) throws SQLException {
+        List<DonneePhysique> donneesPhysiques = new ArrayList<>();
+
+        // Requête SQL pour récupérer les données physiques du joueur
+        String sql = "SELECT * FROM " + table + " WHERE idJoueur = ?";
+        
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, idJoueur); // Associe l'ID du joueur au paramètre de la requête
+            ResultSet data = stmt.executeQuery();
+
+            // Parcourir les résultats et les mapper à des objets DonneePhysique
+            while (data.next()) {
+                donneesPhysiques.add(getDonneePhysique(data));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; // Propager l'exception pour la gestion des erreurs
+        }
+
+        return donneesPhysiques;
     }
 }
