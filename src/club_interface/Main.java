@@ -1,8 +1,11 @@
 package club_interface;
 
 import javax.swing.*;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 public class Main extends JFrame {
@@ -60,7 +63,10 @@ public class Main extends JFrame {
              {"Antoine Griezmann", "Milieu Offensif", 32, "Repos", "45%", "Éditer"},
              {"Paul Pogba", "Milieu", 30, "Blessé", "75%", "Éditer"}
          };
-         JTable table = new JTable(new DefaultTableModel(data, columnNames));
+         DefaultTableModel model = new DefaultTableModel(data, columnNames);
+         JTable table = new JTable(model);
+         table.getColumn("Actions").setCellRenderer(new ButtonRenderer());
+         table.getColumn("Actions").setCellEditor(new ButtonEditor(new JCheckBox()));
          JScrollPane tableScroll = new JScrollPane(table);
 
          // Ajouter composants au panel principal
@@ -91,5 +97,50 @@ public class Main extends JFrame {
     public static void main(String[] args)
 	{
 		new Main();
+    }
+    
+    static class ButtonRenderer extends JButton implements TableCellRenderer {
+        public ButtonRenderer() {
+            setOpaque(true);
+        }
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            setText((value == null) ? "" : value.toString());
+            return this;
+        }
+    }
+
+    static class ButtonEditor extends DefaultCellEditor {
+        private JButton button;
+        private String label;
+        private boolean isPushed;
+        
+        public ButtonEditor(JCheckBox checkBox) {
+            super(checkBox);
+            button = new JButton();
+            button.setOpaque(true);
+            button.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    fireEditingStopped();
+                }
+            });
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            label = (value == null) ? "" : value.toString();
+            button.setText(label);
+            isPushed = true;
+            return button;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            if (isPushed) {
+                JOptionPane.showMessageDialog(button, "Édition de: " + label);
+            }
+            isPushed = false;
+            return label;
+        }
     }
 }
