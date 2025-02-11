@@ -14,6 +14,13 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/views</name>
+			<type>2</type>
+			<location>/home/josias/Documents/projects/club_innovant_agile_methodology/src/views</location>
+		</link>
+	</linkedResources>
 	<filteredResources>
 		<filter>
 			<id>1739266456146</id>

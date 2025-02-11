@@ -21,9 +21,9 @@ public class ContratModel extends Model {
 		contrat.dateDebut = data.getTimestamp("dateDebut");
 		contrat.dateFin = data.getTimestamp("dateFin");
 		contrat.salaire = data.getFloat("salaire");
-		contrat.prime = data.getFloat("prime");
+		contrat.primes = data.getFloat("primes");
 		contrat.devise = data.getString("devise");
-		contrat.idJoueur = data.getInt("idJoueur");
+		contrat.idJoueur = data.getInt("idjoueur");
 
 		return contrat;
     }

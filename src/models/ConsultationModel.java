@@ -21,7 +21,7 @@ public class ConsultationModel extends Model {
 		nc.resultats = data.getString("resultats");
 		nc.traitements = data.getString("traitements");
 		nc.idJoueur = data.getInt("idjoueurs");
-		nc.idMedecin = data.getInt("idMedecin");
+		nc.idMedecin = data.getInt("idmedecin");
 
 		return nc;
     }

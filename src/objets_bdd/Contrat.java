@@ -8,7 +8,7 @@ public class Contrat {
 	public Timestamp dateDebut;
 	public Timestamp dateFin;
 	public float salaire;
-	public float prime;
+	public float primes;
 	public String devise;
 	public int idJoueur;
 	

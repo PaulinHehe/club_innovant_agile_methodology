@@ -23,7 +23,7 @@ public abstract class BaseModel {
     }
     
 
-    public boolean create(String[] columns, Object[] values) {
+    public boolean create(String[] columns, Object[] values)  throws SQLException {
         if (columns.length != values.length) return false;
 
         String sql = "INSERT INTO " + table + " (" + String.join(", ", columns) + ") VALUES (";
@@ -66,7 +66,7 @@ public abstract class BaseModel {
         return null;
     }
 
-    public boolean update(int id, String[] columns, Object[] values) {
+    public boolean update(int id, String[] columns, Object[] values) throws SQLException {
         if (columns.length != values.length) return false;
 
         String sql = "UPDATE " + table + " SET ";
@@ -85,7 +85,7 @@ public abstract class BaseModel {
         }
     }
 
-    public boolean delete(int id) {
+    public boolean delete(int id) throws SQLException {
         String sql = "DELETE FROM " + table + " WHERE " + idField + " = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);

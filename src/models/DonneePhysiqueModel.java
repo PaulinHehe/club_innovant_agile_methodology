@@ -17,13 +17,13 @@ public class DonneePhysiqueModel extends Model {
     {
     	DonneePhysique donneesPhysique = new DonneePhysique();
 		donneesPhysique.id = data.getInt("id");
-		donneesPhysique.vitessMax = data.getFloat("vitessMax");
+		donneesPhysique.vitesseMax = data.getFloat("vitesseMax");
 		donneesPhysique.distanceParcourue = data.getFloat("distanceParcourue");
-		donneesPhysique.nbSprints = data.getInt("nbSprints");
+		donneesPhysique.nbSprints = data.getInt("nombreSprints");
 		donneesPhysique.vo2Max = data.getFloat("vo2Max");
 		donneesPhysique.acceleration = data.getFloat("acceleration");
 		donneesPhysique.puissance = data.getFloat("puissance");
-		donneesPhysique.idConsultation = data.getInt("idConsultation");
+		donneesPhysique.idjoueur = data.getInt("idJoueur");
 
 		return donneesPhysique;
     }
