@@ -1,12 +1,12 @@
 package objets_bdd;
 
 public class DonneePhysique {
-	int id;
-	float vitessMax;
-	float distanceParcourue;
-	int nbSprints;
-	float vo2Max;
-	float acceleration;
-	float puissance;
-	int idConsultation;
+	public int id;
+	public float vitessMax;
+	public float distanceParcourue;
+	public int nbSprints;
+	public float vo2Max;
+	public float acceleration;
+	public float puissance;
+	public int idConsultation;
 }
