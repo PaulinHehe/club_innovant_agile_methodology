@@ -1,10 +1,10 @@
 package objets_bdd;
 
 public class Consultation {
-	int id;
-	String details;
-	String resultats;
-	String traitements;
-	int idJoueur;
-	int idMedecin;
+	public int id;
+	public String details;
+	public String resultats;
+	public String traitements;
+	public int idJoueur;
+	public int idMedecin;
 }

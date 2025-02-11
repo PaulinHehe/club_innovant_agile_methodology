@@ -3,12 +3,12 @@ package objets_bdd;
 import java.util.Date;
 
 public class PerformanceMatch {
-	int id;
-	int buts;
-	Date dateMatch;
-	int passesDecisives;
-	int tirsCadres;
-	int duelsGagnes;
-	int dribblesReussis;
-	float xg;
+	public int id;
+	public int buts;
+	public Date dateMatch;
+	public int passesDecisives;
+	public int tirsCadres;
+	public int duelsGagnes;
+	public int dribblesReussis;
+	public float xg;
 }

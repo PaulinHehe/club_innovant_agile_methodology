@@ -14,7 +14,7 @@ public class Main {
         Object[] values = {"Mbappé", "Kylian", "1998-12-20", "France", 123456, 7, "Attaquant", 1.78, 73, "Droitier"};
 
         try {
-        	Model<Joueur> data = joueur.getAll();
+        	List<Joueur> data = joueur.getAll();
 			//Joueur data = (Joueur) joueur.get(10);
 			System.out.println(data.get(9).nom);
 		} catch (SQLException e) {

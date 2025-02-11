@@ -1,11 +1,11 @@
 package objets_bdd;
 
 public class Utilisateur {
-	int id;
-	String nom;
-	String prenom;
-	String username;
-	String mdp;
-	String role;
+	public int id;
+	public String nom;
+	public String prenom;
+	public String username;
+	public String mdp;
+	public String role;
 	
 }
