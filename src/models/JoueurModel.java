@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import objets_bdd.DonneePhysique;
 import objets_bdd.Joueur;
 
 public class JoueurModel extends Model {
@@ -49,4 +50,6 @@ public class JoueurModel extends Model {
     	
     	return retour;
     }
+
+	
 }
