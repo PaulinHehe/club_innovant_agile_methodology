@@ -1,5 +1,6 @@
 package models;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -41,5 +42,27 @@ public class ConsultationModel extends Model {
     		retour.add(this.getConsultation(data));
     	
     	return retour;
+    }
+    
+    public List<Consultation> getAllFromJoueur(int idJoueur) throws SQLException {
+        List<Consultation> consultations = new ArrayList<>();
+
+        // Requête SQL pour récupérer les consultations du joueur
+        String sql = "SELECT * FROM " + table + " WHERE idjoueurs = ?";
+        
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, idJoueur); // Associe l'ID du joueur au paramètre de la requête
+            ResultSet data = stmt.executeQuery();
+
+            // Parcourir les résultats et les mapper à des objets Consultation
+            while (data.next()) {
+                consultations.add(getConsultation(data));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; // Propager l'exception pour la gestion des erreurs
+        }
+
+        return consultations;
     }
 }

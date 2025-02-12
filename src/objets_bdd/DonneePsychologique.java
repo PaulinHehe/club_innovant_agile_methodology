@@ -5,5 +5,5 @@ public class DonneePsychologique {
 	public String profilPsychologique;
 	public String suiviMental;
 	public String strategiePreparation;
-	public int idConsultation;
+	public int idJoueur;
 }

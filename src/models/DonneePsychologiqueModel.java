@@ -21,8 +21,8 @@ public class DonneePsychologiqueModel extends Model {
 		donneesPsychologique.id = data.getInt("id");
 		donneesPsychologique.profilPsychologique = data.getString("profilPsychologique");
 		donneesPsychologique.suiviMental = data.getString("suiviMental");
-		donneesPsychologique.strategiePreparation = data.getString("strategiePreparation");
-		donneesPsychologique.idConsultation = data.getInt("idConsultation");
+		donneesPsychologique.strategiePreparation = data.getString("strategiesPreparation");
+		donneesPsychologique.idJoueur = data.getInt("idJoueurs");
 
 		return donneesPsychologique;
     }
@@ -48,7 +48,7 @@ public class DonneePsychologiqueModel extends Model {
         List<DonneePsychologique> donneesPsychologiques = new ArrayList<>();
 
         // Requête SQL pour récupérer les données psychologiques du joueur
-        String sql = "SELECT * FROM " + table + " WHERE idJoueur = ?";
+        String sql = "SELECT * FROM " + table + " WHERE idJoueurs = ?";
         
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, idJoueur); // Associe l'ID du joueur au paramètre de la requête

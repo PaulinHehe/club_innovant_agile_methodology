@@ -2,11 +2,17 @@ package views;
 
 import views.JoueurView;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.sql.SQLException;
+
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import views.ContratView;
 import views.PerformanceView;
 import views.UtilisateurView;
+import views.ConsultationView;
 
 public class Dashboard extends javax.swing.JFrame {
 
@@ -15,24 +21,33 @@ public class Dashboard extends javax.swing.JFrame {
     private JPanel ContratView; // Panel pour les contrats
     private JPanel PerformanceView; // Panel pour les performances
     private JPanel UtilisateurView; // Panel pour les utilisateurs
+    private JPanel ConsultationView;
+    private JPanel dashboardPanel;
 
-    public Dashboard() {
+    public Dashboard() throws SQLException{
         initComponents();
         initPanels(); // Initialiser les panneaux
+        setSize(1000, 600); // Définir une taille pour la fenêtre
+        setLocationRelativeTo(null); // Centrer la fenêtre
     }
 
-    private void initPanels() {
+    private void initPanels() throws SQLException {
         // Créer les panneaux
         JoueurView = new JoueurView();
         ContratView = new ContratView();
         PerformanceView = new PerformanceView();
         UtilisateurView = new UtilisateurView();
+        ConsultationView = new ConsultationView();
+        dashboardPanel = createDashboardPanel(); // Créer le panneau du tableau de bord
+
 
         // Ajouter les panneaux au dashboard
+        dashboard.add(dashboardPanel, "dashboard"); // Ajouter le panneau du tableau de bord
         dashboard.add(JoueurView, "joueur");
         dashboard.add(ContratView, "contrat");
         dashboard.add(PerformanceView, "performance");
         dashboard.add(UtilisateurView, "utilisateur");
+        dashboard.add(ConsultationView, "consultations");
 
         // Masquer tous les panneaux au démarrage
         showPanel("dashboard"); // Afficher le tableau de bord par défaut
@@ -40,10 +55,12 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void showPanel(String panelName) {
         // Masquer tous les panneaux
+    	dashboardPanel.setVisible(false);
         JoueurView.setVisible(false);
         ContratView.setVisible(false);
         PerformanceView.setVisible(false);
         UtilisateurView.setVisible(false);
+        ConsultationView.setVisible(false);
 
         // Afficher le panneau demandé
         switch (panelName) {
@@ -59,8 +76,12 @@ public class Dashboard extends javax.swing.JFrame {
             case "utilisateur":
                 UtilisateurView.setVisible(true);
                 break;
+            case "consultations":
+                ConsultationView.setVisible(true);
+                System.out.println("test");
+                break;
             default:
-                // Afficher le tableau de bord par défaut
+                dashboardPanel.setVisible(true);
                 break;
         }
     }
@@ -81,7 +102,7 @@ public class Dashboard extends javax.swing.JFrame {
 
         sidebar.setBackground(new java.awt.Color(45, 55, 145));
 
-        jButton6.setText("Évaluations");
+        jButton6.setText("Consultations");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
@@ -192,6 +213,15 @@ public class Dashboard extends javax.swing.JFrame {
 
         pack();
     }
+    
+    private JPanel createDashboardPanel() {
+        JPanel dashboardPanel = new JPanel();
+        dashboardPanel.setBackground(Color.WHITE);
+        JLabel label = new JLabel("Bienvenue sur le tableau de bord");
+        label.setFont(new Font("Arial", Font.BOLD, 24));
+        dashboardPanel.add(label);
+        return dashboardPanel;
+    }
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
         showPanel("joueur"); // Afficher le panneau des joueurs
@@ -210,7 +240,7 @@ public class Dashboard extends javax.swing.JFrame {
     }
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {
-        // (À implémenter)
+    	showPanel("consultations"); // Afficher le panneau des consultations
     }
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
@@ -220,7 +250,12 @@ public class Dashboard extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Dashboard().setVisible(true);
+                try {
+					new Dashboard().setVisible(true);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
     }

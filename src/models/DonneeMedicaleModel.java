@@ -8,6 +8,7 @@ import java.util.List;
 
 import objets_bdd.DonneeMedicale;
 
+
 public class DonneeMedicaleModel extends Model {
     public DonneeMedicaleModel() {
         this.table = "donnees_medicales";
@@ -46,9 +47,8 @@ public class DonneeMedicaleModel extends Model {
         List<DonneeMedicale> donneeMedicale = new ArrayList<>();
 
         // Requête SQL pour récupérer les données physiques du joueur
-        String sql = "SELECT * FROM " + table + " WHERE idJoueur = ?";
-        
-        
+        String sql = "SELECT * FROM " + table + " LEFT JOIN consultations as c ON " + table + ".idConsultation = c.id";
+        sql += " WHERE c.idjoueurs = ?";
         
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, idJoueur); // Associe l'ID du joueur au paramètre de la requête
