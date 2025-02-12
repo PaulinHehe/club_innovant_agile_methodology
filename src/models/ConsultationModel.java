@@ -9,11 +9,19 @@ import java.util.List;
 import objets_bdd.Consultation;
 
 public class ConsultationModel extends Model {
+    /**
+     * Constructeur
+     */
     public ConsultationModel() {
         this.table = "consultations";
         this.idField = "id";
     }
     
+    /**
+     * @param data: ResultSet
+     * @return Retourne une consultations
+     * @throws SQLException
+     */
     private Consultation getConsultation(ResultSet data) throws SQLException
     {
     	Consultation nc = new Consultation();
@@ -27,6 +35,11 @@ public class ConsultationModel extends Model {
 		return nc;
     }
 
+    /**
+     * @param id
+     * @return
+     * @throws SQLException
+     */
     public Consultation get(int id) throws SQLException {
     	ResultSet data = super.find(id);
     	
@@ -35,6 +48,10 @@ public class ConsultationModel extends Model {
     	return null;
     }
     
+    /**
+     * @return List<Consultation>
+     * @throws SQLException
+     */
     public List<Consultation> getAll() throws SQLException {
     	ResultSet data = super.all();
     	List<Consultation> retour = new ArrayList<Consultation>();
@@ -44,6 +61,11 @@ public class ConsultationModel extends Model {
     	return retour;
     }
     
+    /**
+     * @param idJoueur
+     * @return Recupere tout les consultations d'un joueur.
+     * @throws SQLException
+     */
     public List<Consultation> getAllFromJoueur(int idJoueur) throws SQLException {
         List<Consultation> consultations = new ArrayList<>();
 
