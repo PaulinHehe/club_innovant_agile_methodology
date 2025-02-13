@@ -1,17 +1,21 @@
 package views;
 
 import javax.swing.*;
+import javax.swing.text.MaskFormatter;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import models.JoueurModel;
 import objets_bdd.Joueur;
 
 public class JoueurForm extends JDialog {
-    private JTextField nomField, prenomField, dateNaissanceField, numeroLicenceField, numeroMaillotField, positionField, tailleField, poidsField, piedFortField;
+    private JTextField nomField, prenomField, dateNaissanceField, numeroLicenceField, numeroMaillotField, positionField, tailleField, poidsField, piedFortField, nationaliteField;
     private JButton saveButton, cancelButton;
     private JoueurModel joueurModel;
     private Joueur joueur; // Pour la modification
@@ -30,13 +34,19 @@ public class JoueurForm extends JDialog {
         // Création des composants
         nomField = new JTextField(20);
         prenomField = new JTextField(20);
-        dateNaissanceField = new JTextField(20);
+        try {
+			dateNaissanceField = new JFormattedTextField(new MaskFormatter("####-##-## ##:##:##"));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         numeroLicenceField = new JTextField(20);
         numeroMaillotField = new JTextField(20);
         positionField = new JTextField(20);
         tailleField = new JTextField(20);
         poidsField = new JTextField(20);
         piedFortField = new JTextField(20);
+        nationaliteField = new JTextField(20);
 
         saveButton = new JButton("Enregistrer");
         cancelButton = new JButton("Annuler");
@@ -61,6 +71,8 @@ public class JoueurForm extends JDialog {
         formPanel.add(poidsField);
         formPanel.add(new JLabel("Pied Fort :"));
         formPanel.add(piedFortField);
+        formPanel.add(new JLabel("Nationalité :"));
+        formPanel.add(nationaliteField);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(saveButton);
@@ -81,6 +93,7 @@ public class JoueurForm extends JDialog {
             tailleField.setText(String.valueOf(joueur.taille));
             poidsField.setText(String.valueOf(joueur.poids));
             piedFortField.setText(joueur.piedFort);
+            nationaliteField.setText(joueur.nationalite);
         }
 
         // Ajouter des écouteurs d'événements
@@ -110,6 +123,7 @@ public class JoueurForm extends JDialog {
         float taille = Float.parseFloat(tailleField.getText());
         float poids = Float.parseFloat(poidsField.getText());
         String piedFort = piedFortField.getText();
+        String nationalite = nationaliteField.getText();
 
         try {
             if (isEditMode && joueur != null) {
@@ -123,9 +137,10 @@ public class JoueurForm extends JDialog {
                 joueur.taille = taille;
                 joueur.poids = poids;
                 joueur.piedFort = piedFort;
+                joueur.nationalite = nationalite;
 
-                if (joueurModel.update(joueur.id, new String[]{"nom", "prenom", "dateNaissance", "numeroLicence", "numeroMaillot", "position", "taille", "poids", "piedFort"},
-                        new Object[]{nom, prenom, dateNaissance, numeroLicence, numeroMaillot, position, taille, poids, piedFort})) {
+                if (joueurModel.update(joueur.id, new String[]{"nom", "nationalite", "prenom", "dateNaissance", "numeroLicence", "numeroMaillot", "position", "taille", "poids", "piedFort"},
+                        new Object[]{nom, nationalite, prenom, dateNaissance, numeroLicence, numeroMaillot, position, taille, poids, piedFort})) {
                     JOptionPane.showMessageDialog(this, "Joueur modifié avec succès", "Succès", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
                 } else {
@@ -143,9 +158,10 @@ public class JoueurForm extends JDialog {
                 newJoueur.taille = taille;
                 newJoueur.poids = poids;
                 newJoueur.piedFort = piedFort;
+                newJoueur.nationalite = nationalite;
 
-                if (joueurModel.create(new String[]{"nom", "prenom", "dateNaissance", "numeroLicence", "numeroMaillot", "position", "taille", "poids", "piedFort"},
-                        new Object[]{nom, prenom, dateNaissance, numeroLicence, numeroMaillot, position, taille, poids, piedFort})) {
+                if (joueurModel.create(new String[]{"nom", "nationalite", "prenom", "dateNaissance", "numeroLicence", "numeroMaillot", "position", "taille", "poids", "piedFort"},
+                        new Object[]{nom, nationalite, prenom, dateNaissance, numeroLicence, numeroMaillot, position, taille, poids, piedFort})) {
                     JOptionPane.showMessageDialog(this, "Joueur ajouté avec succès", "Succès", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
                 } else {

@@ -1,10 +1,14 @@
 package views;
 
 import javax.swing.*;
+import javax.swing.text.MaskFormatter;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.sql.Timestamp;
 
 import models.ContratModel;
@@ -12,6 +16,7 @@ import objets_bdd.Contrat;
 
 public class ContratForm extends JDialog {
     private JTextField typeField, salaireField, primeField, deviseField, idJoueurField;
+    private JFormattedTextField dateDebutField, dateFinField;
     private JButton saveButton, cancelButton;
     private ContratModel contratModel;
     private Contrat contrat; // Pour la modification
@@ -33,12 +38,20 @@ public class ContratForm extends JDialog {
         primeField = new JTextField(20);
         deviseField = new JTextField(20);
         idJoueurField = new JTextField(20);
+        
+        try {
+        	dateDebutField = new JFormattedTextField(new MaskFormatter("####-##-## ##:##:##"));
+        	dateFinField = new JFormattedTextField(new MaskFormatter("####-##-## ##:##:##"));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
         saveButton = new JButton("Enregistrer");
         cancelButton = new JButton("Annuler");
 
         // Layout
-        JPanel formPanel = new JPanel(new GridLayout(6, 2));
+        JPanel formPanel = new JPanel(new GridLayout(8, 2));
         formPanel.add(new JLabel("Type :"));
         formPanel.add(typeField);
         formPanel.add(new JLabel("Salaire :"));
@@ -49,6 +62,11 @@ public class ContratForm extends JDialog {
         formPanel.add(deviseField);
         formPanel.add(new JLabel("ID Joueur :"));
         formPanel.add(idJoueurField);
+        formPanel.add(new JLabel("Debut du contrat:"));
+        formPanel.add(dateDebutField);
+        
+        formPanel.add(new JLabel("Fin du contrat:"));
+        formPanel.add(dateFinField);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(saveButton);
@@ -65,6 +83,8 @@ public class ContratForm extends JDialog {
             primeField.setText(String.valueOf(contrat.primes));
             deviseField.setText(contrat.devise);
             idJoueurField.setText(String.valueOf(contrat.idJoueur));
+            dateDebutField.setText(contrat.dateDebut.toString());
+            dateFinField.setText(contrat.dateFin.toString());
         }
 
         // Ajouter des écouteurs d'événements
@@ -90,6 +110,8 @@ public class ContratForm extends JDialog {
         float prime = Float.parseFloat(primeField.getText());
         String devise = deviseField.getText();
         int idJoueur = Integer.parseInt(idJoueurField.getText());
+        String dateDebut = dateDebutField.getText();
+        String dateFin = dateFinField.getText();
 
         try {
             if (isEditMode && contrat != null) {
@@ -99,9 +121,11 @@ public class ContratForm extends JDialog {
                 contrat.primes = prime;
                 contrat.devise = devise;
                 contrat.idJoueur = idJoueur;
+                contrat.dateDebut = Timestamp.valueOf(dateDebut);
+                contrat.dateFin = Timestamp.valueOf(dateFin);
 
-                if (contratModel.update(contrat.id, new String[]{"type", "salaire", "primes", "devise", "idJoueur"},
-                        new Object[]{type, salaire, prime, devise, idJoueur})) {
+                if (contratModel.update(contrat.id, new String[]{"type", "salaire", "primes", "devise", "idJoueur", "dateDebut", "dateFin"},
+                        new Object[]{type, salaire, prime, devise, idJoueur, dateDebut, dateFin})) {
                     JOptionPane.showMessageDialog(this, "Contrat modifié avec succès", "Succès", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
                 } else {
@@ -115,9 +139,11 @@ public class ContratForm extends JDialog {
                 newContrat.primes = prime;
                 newContrat.devise = devise;
                 newContrat.idJoueur = idJoueur;
+                contrat.dateDebut = Timestamp.valueOf(dateDebut);
+                contrat.dateFin = Timestamp.valueOf(dateFin);
 
-                if (contratModel.create(new String[]{"type", "salaire", "primes", "devise", "idJoueur"},
-                        new Object[]{type, salaire, prime, devise, idJoueur})) {
+                if (contratModel.create(new String[]{"type", "salaire", "primes", "devise", "idJoueur", "dateDebut", "dateFin"},
+                        new Object[]{type, salaire, prime, devise, idJoueur, dateDebut, dateFin})) {
                     JOptionPane.showMessageDialog(this, "Contrat ajouté avec succès", "Succès", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
                 } else {
